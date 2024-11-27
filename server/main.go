@@ -31,7 +31,7 @@ func main() {
 func initializeDevices() []generator.Device {
 	return []generator.Device{
 		&generator.SmartBelt{BaseDevice: generator.BaseDevice{ID: genUUID(), Name: "Fitbit A112 SmartWatch"}},
-		&generator.SmartWatch{BaseDevice: generator.BaseDevice{ID: genUUID(), Name: "Lululemon Yoga Pants"}},
+		&generator.SmartWatch{BaseDevice: generator.BaseDevice{ID: genUUID(), Name: "Nadi X Yoga Pants"}},
 		&generator.YogaPants{BaseDevice: generator.BaseDevice{ID: genUUID(), Name: "Fitbit SmartBelt"}},
 	}
 }

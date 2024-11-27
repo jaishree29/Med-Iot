@@ -2,8 +2,6 @@ package generator
 
 import (
 	"math/rand"
-
-	"github.com/google/uuid"
 )
 
 type Device interface {
@@ -26,11 +24,6 @@ func (d *BaseDevice) GetName() string {
 	return d.Name
 }
 
-func (d *BaseDevice) setCommonFields(name string) {
-	d.ID = genUUID()
-	d.Name = name
-}
-
 // SmartWatch device implementation
 type SmartWatch struct {
 	BaseDevice
@@ -45,7 +38,6 @@ type SmartWatch struct {
 }
 
 func (s *SmartWatch) GenerateData() {
-	s.setCommonFields("Fitbit A112 SmartWatch")
 	s.Info.BatteryLevel = genRandomInt(0, 100)
 	s.Info.HeartRate = genRandomInt(60, 100)
 	s.Info.SleepTime = genRandomInt(0, 8)
@@ -66,7 +58,6 @@ type YogaPants struct {
 }
 
 func (y *YogaPants) GenerateData() {
-	y.setCommonFields("Lululemon Yoga Pants")
 	y.Info.BatteryLevel = genRandomInt(0, 100)
 	y.Info.Temperature = genRandomFloat32(20.0, 30.0)
 	y.Info.Humidity = genRandomInt(40, 60)
@@ -85,7 +76,6 @@ type SmartBelt struct {
 }
 
 func (s *SmartBelt) GenerateData() {
-	s.setCommonFields("Fitbit SmartBelt")
 	s.Info.BatteryLevel = genRandomInt(0, 100)
 	s.Info.HeartRate = genRandomInt(60, 100)
 	s.Info.MuscleTension = genRandomInt(0, 100)
@@ -99,8 +89,4 @@ func genRandomInt(min, max int) int {
 
 func genRandomFloat32(min, max float64) float32 {
 	return float32(min + rand.Float64()*(max-min))
-}
-
-func genUUID() string {
-	return uuid.New().String()
 }

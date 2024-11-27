@@ -3,8 +3,10 @@ package main
 import (
 	"iot-mocker/generator"
 	"log"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 var Devices []generator.Device
@@ -15,6 +17,7 @@ func main() {
 	// Initialize devices
 	Devices = initializeDevices()
 	generateRandomData()
+	go updateDevices()
 
 	app.Get("/devices", getDevices)
 	app.Get("/devices/:id", getDeviceData)
@@ -27,9 +30,19 @@ func main() {
 
 func initializeDevices() []generator.Device {
 	return []generator.Device{
-		&generator.SmartBelt{},
-		&generator.SmartWatch{},
-		&generator.YogaPants{},
+		&generator.SmartBelt{BaseDevice: generator.BaseDevice{ID: genUUID(), Name: "Fitbit A112 SmartWatch"}},
+		&generator.SmartWatch{BaseDevice: generator.BaseDevice{ID: genUUID(), Name: "Lululemon Yoga Pants"}},
+		&generator.YogaPants{BaseDevice: generator.BaseDevice{ID: genUUID(), Name: "Fitbit SmartBelt"}},
+	}
+}
+
+func updateDevices() {
+	for {
+		for _, device := range Devices {
+			device.GenerateData()
+		}
+
+		time.Sleep(3 * time.Second)
 	}
 }
 
@@ -67,4 +80,8 @@ func getDeviceData(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 		"error": "Device not found",
 	})
+}
+
+func genUUID() string {
+	return uuid.New().String()
 }
